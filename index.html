@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      
+      .form input[type="number"] {
+        width: 200px;
+      }
+
+      .lastResult {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Number guessing game</h1>
+
+    <p>We have selected a random number between 1 and 100. 
+        See if you can guess it in 10 turns or fewer.
+        We'll tell you if your guess was too high or too low.</p>
+
+    <div class="form">
+      <label for="guessField">Enter a guess: </label>
+      <input type="number" min="1" max="100" required id="guessField" class="guessField">
+      <input type="submit" value="Submit guess" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+      <p class="guesses"></p>
+      <p class="lastResult"></p>
+      <p class="lowOrHi"></p>
+    </div>
+
+    <script>
+
+      // Your JavaScript goes here
+      let randomNumber = Math.floor(Math.random() * 100) + 1;
+    //   Первой переменной — randomNumber— присваивается случайное 
+    //   число от 1 до 100, вычисляемое с помощью математического алгоритма.
+
+const guesses = document.querySelector('.guesses');
+const lastResult = document.querySelector('.lastResult');
+const lowOrHi = document.querySelector('.lowOrHi');
+// Каждая из первых трех констант предназначена для хранения ссылок на абзацы
+//  результатов в нашем HTML и используется для вставки значений в абзацы позже в 
+//  коде (обратите внимание, как они находятся внутри <div>элемента, который сам 
+// используется для выбора всех трех позже для сброса, когда мы перезапустим игру):
+// <div class="resultParas">
+//   <p class="guesses"></p>
+//   <p class="lastResult"></p>
+//   <p class="lowOrHi"></p>
+// </div>
+
+const guessSubmit = document.querySelector('.guessSubmit');
+const guessField = document.querySelector('.guessField');
+// Следующие две константы хранят ссылки на ввод текста формы и кнопку 
+// отправки и используются для управления последующей отправкой предположения.
+// <label for="guessField">Enter a guess: </label>
+// <input type="number" id="guessField" class="guessField" />
+// <input type="submit" value="Submit guess" class="guessSubmit" />
+
+let guessCount = 1;
+let resetButton;
+// Наши последние две переменные хранят счетчик догадок, равный 1 
+// (используется для отслеживания количества догадок, сделанных 
+// игроком), и ссылку на кнопку сброса, которой еще нет 
+// (но она появится позже).
+
+guessField.focus();
+// Эта строка добавлена в самом конце написания кода - guessField.focus(); использует
+//  focus()метод для автоматического помещения текстового курсора
+//  в <input>текстовое поле, как только страница загружается, что означает, что пользователь может
+//   начать вводить свое первое предположение сразу, без необходимости сначала щелкать поле формы. 
+//   Это всего лишь небольшое дополнение, но оно повышает удобство использования —
+// дает пользователю хорошее визуальное представление о том, что ему нужно сделать, чтобы играть в игру.
+
+function checkGuess() {
+  alert('I am a placeholder');
+}
+// Здесь мы определили функцию, используя ключевое слово function,
+//  за которым следует имя с круглыми скобками после него. 
+//  После этого ставим две фигурные скобки ( { }). 
+//  Внутри фигурных скобок находится весь код, который мы хотим запускать 
+//  всякий раз, когда мы вызываем функцию.
+// Когда мы хотим запустить код, мы вводим имя функции, за которым следуют
+//  круглые скобки.
+// checkGuess();
+function checkGuess() {
+  const userGuess = Number(guessField.value);
+//   Первая строка объявляет вызываемую переменную userGuessи устанавливает ее значение равным текущему значению, введенному в текстовое поле. Мы также запускаем это значение через встроенный Number()конструктор, просто чтобы убедиться, что значение определенно является числом. Поскольку мы не изменяем эту переменную, мы объявим ее с помощью const.
+  if (guessCount === 1) {
+    // Если тест возвращает true, мы запускаем код внутри фигурных скобок.
+    // Если нет, мы этого не делаем и переходим к следующему фрагменту кода.
+    // В этом случае тест проверяет,
+    //  равна ли guessCount переменная 1(т.е. является ли это первым ходом игрока или нет):
+    // guessCount === 1
+    // Если это так, мы делаем текстовое содержимое абзаца догадок равным Previous 
+    // guesses:. Если нет, то мы не делаем.
+    guesses.textContent = 'Previous guesses: ';
+  }
+  guesses.textContent += `${userGuess} ''  `;
+//   Строка  добавляет текущее userGuess значение в конец guesses абзаца, а также пробел, поэтому
+//    между каждым показанным предположением будет пробел.
+
+// Следующий блок выполняет несколько проверок:
+
+  if (userGuess === randomNumber) {
+    // Первый if (){ }проверяет, совпадает ли предположение пользователя с 
+    // randomNumberнабором в верхней части нашего JavaScript. 
+    lastResult.textContent = 'Congratulations! You got it right!';
+    lastResult.style.backgroundColor = 'green';
+    // Если это так, то игрок угадал правильно и игра выиграна, поэтому мы показываем 
+    // игроку сообщение с поздравлением красивого зеленого цвета,
+    lowOrHi.textContent = '';
+    setGameOver();
+    // очищаем содержимое информационного поля «Низкое/высокое значение» и запускаем 
+    // функцию с именем setGameOver(), которую мы обсудим позже.
+    
+} else if (guessCount === 10) {
+    lastResult.textContent = '!!!GAME OVER!!!';
+    lowOrHi.textContent = '';
+    setGameOver();
+    // Теперь мы привязали еще один тест к концу последнего, используя else if (){ }структуру. 
+    // Этот проверяет, является ли этот ход последним ходом пользователя. Если да, то программа делает
+    //  то же самое, что и в предыдущем блоке, только с сообщением об окончании игры вместо поздравления.
+  } else {
+    lastResult.textContent = 'Wrong!';
+    // Последний блок в конце этого кода ( else { }) содержит код, который запускается только в том случае,
+    //  если ни один из двух других тестов не возвращает true (т. е. игрок не угадал правильно, 
+    //  но у него осталось больше предположений).
+    lastResult.style.backgroundColor = 'red';
+   
+    if (userGuess < randomNumber) {
+      lowOrHi.textContent = 'Last guess was too low!';
+    } else if (userGuess > randomNumber) {
+      lowOrHi.textContent = 'Last guess was too high!';
+       // В этом случае мы говорим им, что они неправы, затем мы выполняем еще один условный тест, 
+    // чтобы проверить, была ли догадка выше или ниже ответа, 
+    // отображая соответствующее сообщение, чтобы сообщить им больше или меньше.
+    }
+  }
+
+  guessCount++;
+  guessField.value = '';
+  guessField.focus();
+//   Последние три строки в функции  подготавливают нас к отправке следующего
+//   предположения. Мы добавляем 1 к guessCountпеременной, чтобы игрок использовал свой ход 
+//   ( ++это операция приращения — увеличение на 1), очищаем
+//    значение из текстового поля формы и снова фокусируем его, готовый к вводу следующего предположения.
+}
+guessSubmit.addEventListener('click', checkGuess);
+// Здесь мы добавляем прослушиватель событий к guessSubmitкнопке. Это метод, который принимает два 
+// входных значения (называемых аргументами ) — тип события, которое мы прослушиваем
+//  (в данном случае click) в виде строки, и код, который мы хотим запустить при возникновении 
+//  события (в данном случае checkGuess()функция) .
+//  Обратите внимание, что нам не нужно указывать круглые скобки при записи внутри addEventListener().
+function setGameOver() {
+  guessField.disabled = true;
+  guessSubmit.disabled = true;
+//   Первые две строки отключают ввод текста формы и кнопку, устанавливая для их отключенных 
+//   свойств значение true. Это необходимо, потому что, если бы мы этого не сделали, пользователь
+//    мог бы отправить больше предположений после окончания игры, что испортило бы ситуацию.
+  resetButton = document.createElement('button');
+  resetButton.textContent = 'Start new game';
+  document.body.append(resetButton);
+//   Следующие три строки генерируют новый <button>элемент, устанавливают для его текстовой метки значение
+//      «Начать новую игру» и добавляют его в конец существующего HTML-кода.
+  resetButton.addEventListener('click', resetGame);
+//   Последняя строка устанавливает прослушиватель событий для нашей новой кнопки, так что при нажатии на нее
+//    resetGame()запускается вызываемая функция.
+}
+// Теперь нам нужно определить и эту функцию! Добавьте следующий код снова в конец
+//  вашего JavaScript:
+
+
+// Этот довольно длинный блок кода полностью возвращает все к тому состоянию, которое было в начале игры, 
+// так что игрок может попробовать еще раз. Это:
+function resetGame() {
+  guessCount = 1;
+//   Ставит guessCountспину на 1.
+
+  const resetParas = document.querySelectorAll('.resultParas p');
+  for (const resetPara of resetParas) {
+    resetPara.textContent = '';
+    // Очищает весь текст от информационных абзацев. Мы выбираем все абзацы внутри
+    //  <div class="resultParas"></div>,
+    //  затем перебираем каждый из них, устанавливая для них textContentзначение ''(пустая строка).
+  }
+
+  resetButton.parentNode.removeChild(resetButton);
+//   Удаляет кнопку сброса из нашего кода.
+
+  guessField.disabled = false;
+  guessSubmit.disabled = false;
+  guessField.value = '';
+  guessField.focus();
+//   Включает элементы формы, а также очищает и фокусирует текстовое
+//    поле, готовое к вводу нового предположения.
+
+  lastResult.style.backgroundColor = 'white';
+//   Удаляет цвет фона lastResultабзаца.
+
+  randomNumber = Math.floor(Math.random() * 100) + 1;
+//   Генерирует новое случайное число, чтобы вам не приходилось снова угадывать
+//    одно и то же число!
+}
+
+    </script>
+  </body>
+</html>
